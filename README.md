@@ -1,3 +1,4 @@
+
 # Assignment 1: Knowledge Base Basics
 
 In this lab assignment, you are going to create a basic knowledge base (KB) to store and retrieve facts. The facts will be statements that includes predicates (e.g., Color, Size, Inst) that relate objects together.  For example:
@@ -38,11 +39,11 @@ To get you started, the stubbed out code for the `KnowledgeBase.kb_assert` and `
 Your task is two-part:
 
 1. Implement storing facts in the KB
-2. Implement retrieving facts from the KB 
+2. Implement retrieving facts from the KB
 
 ## Storing facts
 
-Storing facts simply puts any new facts received into a list of facts.  Do not store a fact if it is already in the KB. Be careful to only put a Fact in the list and not just anything (i.e., check that the argument is a Fact).  Note that we expect the facts to be stored in a list (and not a set) to ensure that they are retrieved in a deterministic order.  This is not criticial to the function of the KB but is essential for the Auto Grader. 
+Storing facts simply puts any new facts received into a list of facts.  Do not store a fact if it is already in the KB. Be careful to only put a Fact in the list and not just anything (i.e., check that the argument is a Fact).  Note that we expect the facts to be stored in a list (and not a set) to ensure that they are retrieved in a deterministic order.  This is not criticial to the function of the KB but is essential for the Auto Grader.
 
 ### Retrieving facts
 

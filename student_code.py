@@ -26,8 +26,11 @@ class KnowledgeBase(object):
         """
 
         # check to make sure fact is a fact
-        if not isinstance(fact, Fact):
-            print("Input was not a fact")
+        if isinstance(fact, Rule):
+            print("Sorry, rules are not implented in Assignment 1. Wait for Assignment 2")
+            return
+        elif not isinstance(fact, Fact):
+            print("Input was not a fact rule ")
             return
         else:
             if fact in self.facts:
@@ -47,11 +50,7 @@ class KnowledgeBase(object):
             ListOfBindings|False - ListOfBindings if result found, False otherwise
         """
 
-
-
-        fact_list = []
-        bind1 = Bindings()
-        bind2 = Bindings()
+        # list of bindings to be returned
         list_of_bindings = ListOfBindings()
 
         print("Asking {!r}".format(fact))
@@ -61,85 +60,48 @@ class KnowledgeBase(object):
         else:
             #Terms of the input
             in_predicate = fact.statement.predicate
-            in_term1 = fact.statement.terms[0]
-            in_term2 = fact.statement.terms[1]
+            list_terms = fact.statement.terms
 
 
-            # Are the terms variables: booleans
-            var_term1 = is_var(in_term1)
-            var_term2 = is_var(in_term2)
+            for kb_fact in self.facts:
+                # binding to be added
+                bind = Bindings()
 
-            # figuring out bindings
-            #for kb_fact in self.facts:
-            #    if kb_fact.statement.predicate == in_predicate:
-                    #print(b.add_binding(in_term1, kb_fact.statement.terms[0]))
+                # index of terms list
+                index = 0
 
-            #print(type(Variable(in_term1).element))
-            # First, see if any input terms are variables
-            if var_term1 or var_term2:
-                if var_term1 and var_term2:
-                    print("two vars")
-                    for kb_fact in self.facts:
-                        if kb_fact.statement.predicate == in_predicate:
-                            #bound_to_t1 = bind1.bound_to(Variable(in_term1))
-                            #bound_to_t2 = bind2.bound_to(Variable(in_term2))
+                # indicate if the binding is for the wrong fact
+                not_bind = True
 
-                            #if bound_to_t1 != kb_fact.statement.terms[0] or bound_to_t2 != kb_fact.statement.terms[1]:
-                            bind = Bindings()
-                            # Overall list of bindings added
-                            bind1.add_binding(Variable(in_term1), Constant(kb_fact.statement.terms[0]))
-                            bind2.add_binding(Variable(in_term2), Constant(kb_fact.statement.terms[1]))
+                # go through each term for the given ask
+                for term in list_terms:
 
-                            # Binding to add to the list of bindings
-                            bind.add_binding(Variable(in_term1), Constant(kb_fact.statement.terms[0]))
-                            bind.add_binding(Variable(in_term2), Constant(kb_fact.statement.terms[1]))
+                    # if the KB does have a matching predicate, then look for bindings
+                    if kb_fact.statement.predicate == in_predicate:
 
-                            list_of_bindings.add_bindings(bind, kb_fact)
+                        # if it is a variable, add a binding
+                        if is_var(term):
+                            bind.add_binding(Variable(term), Constant(kb_fact.statement.terms[index]))
 
+                        else:
+                            # If a non variable term from the asked fact
+                            #doesn't match with the KB term, then do not add the current binding
+                            if term != kb_fact.statement.terms[index]:
+                                not_bind = False
+                                break
+                    # if the KB fact doesn't have a matching predicate
+                    else:
+                        not_bind = False
 
-                elif var_term1 and not var_term2:
-                    print("First term is var")
-                    for kb_fact in self.facts:
-                        if kb_fact.statement.predicate == in_predicate:
+                    # increasing the index of the knowledge base term being viewed
+                    index = index + 1
 
-                            if kb_fact.statement.terms[1] == in_term2:
-                                #bound_to_t1 = bind1.bound_to(Variable(in_term1))
-                                #if bound_to_t1 != kb_fact.statement.terms[0]:
-                                bind = Bindings()
-                                # Overall list of bindings added
-                                bind1.add_binding(Variable(in_term1), Constant(kb_fact.statement.terms[0]))
-
-                                # Binding to add to the list of bindings
-                                bind.add_binding(Variable(in_term1), Constant(kb_fact.statement.terms[0]))
-
-                                list_of_bindings.add_bindings(bind, kb_fact)
-                elif not var_term1 and var_term2:
-                    print("Second term is var")
-                    for kb_fact in self.facts:
-                        if kb_fact.statement.predicate == in_predicate:
-
-                            if kb_fact.statement.terms[0] == in_term1:
-                                #bound_to_t2 = bind1.bound_to(Variable(in_term2))
-                                #if bound_to_t2 != kb_fact.statement.terms[1]:
-                                bind = Bindings()
-                                # Overall list of bindings added
-                                bind1.add_binding(Variable(in_term2), Constant(kb_fact.statement.terms[1]))
-
-                                # Binding to add to the list of bindings
-                                bind.add_binding(Variable(in_term2), Constant(kb_fact.statement.terms[1]))
-
-                                list_of_bindings.add_bindings(bind, kb_fact)
-            else:
-                # check to see if the fact is in the knowledge base
-                if fact in self.facts:
-                    bind = Bindings()
-                    print("Fact is in the Knowledge base")
-                    list_of_bindings.add_bindings(bind, fact)
-                else:
-                    return False
+                if not_bind:
+                    list_of_bindings.add_bindings(bind, kb_fact)
 
 
-        print("Asking {!r}".format(fact))
+
+        # If there was not a list, then the fact is not in the KB, return false
         if not list_of_bindings:
             return False
 
