@@ -81,7 +81,7 @@ class KnowledgeBase(object):
 
                         # if it is a variable, add a binding
                         if is_var(term):
-                            bind.add_binding(Variable(term), Constant(kb_fact.statement.terms[index]))
+                            bind.add_binding(term.term, kb_fact.statement.terms[index].term)
 
                         else:
                             # If a non variable term from the asked fact
