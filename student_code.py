@@ -52,18 +52,20 @@ class KnowledgeBase(object):
 
         # list of bindings to be returned
         list_of_bindings = ListOfBindings()
-        no_fact = False
+        # indicator of if there is a fact
+        fact_exist = False
 
-        print("Asking {!r}".format(fact))
+
         # check to make sure argument is a fact
         if not isinstance(fact, Fact):
             sys.exit("Error: input to kb_ask was not a Fact. Try inputting a fact")
         else:
+            # Print the ask statement
+            print("Asking {!r}".format(fact))
+
+
             #Terms of the input
             fact_statement = fact.statement
-
-            # indicator of if there is a fact
-            fact_exist = False
 
             for kb_fact in self.facts:
                 # Result of the function match which produces False if no match is found
@@ -77,7 +79,6 @@ class KnowledgeBase(object):
 
                     # change the indicator to show a fact exists
                     fact_exist = True
-
 
 
             if fact_exist:
