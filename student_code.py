@@ -30,8 +30,8 @@ class KnowledgeBase(object):
             print("Sorry, rules are not implented in Assignment 1. Wait for Assignment 2")
             return
         elif not isinstance(fact, Fact):
-            print("Input was not a fact or rule ")
-            return
+            sys.exit("Error: Input was not a fact or rule. Try inputting a fact or rule")
+            
         else:
             if fact in self.facts:
                 print("Fact already in Knowledge Base.")
